@@ -3,6 +3,9 @@
 namespace App\Bundle\OlxBundle\Scrapper;
 
 use App\Bundle\OlxBundle\Provider\ItemCollection\OlxItemCollectionProviderInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OlxItemScrapper
@@ -20,8 +23,6 @@ class OlxItemScrapper
     {
         $response = $this->httpClient->request('GET', $parsedUrl);
 
-        $collection = $this->olxItemCollectionProvider->provide($response->getContent());
-
-        return $collection;
+        return $this->olxItemCollectionProvider->provide($response->getContent());
     }
 }

@@ -1,0 +1,27 @@
+name: scrapper
+recipe: symfony
+config:
+    php: '8.0'
+    xdebug: true
+    webroot: public
+    config:
+        php: lando/php.ini
+
+services:
+    appserver:
+        ports:
+            - '8080:8080'
+        overrides:
+            environment:
+                LANDO_HOST_IP: "host.docker.internal"
+                XDEBUG_CONFIG: "remote_enable=1 remote_host=host.docker.internal"
+                PHP_IDE_CONFIG: "serverName=sylius.lndo.site"
+                PHP_INI_XDEBUG__REMOTE_PORT: "9003"
+            extra_hosts:
+                - ${LANDO_HOST_IP_DEV:-host}:host-gateway
+
+tooling:
+    cc:
+        service: appserver
+        cmd: rm -fr var/cache
+        description: Forcefully Clears cache
