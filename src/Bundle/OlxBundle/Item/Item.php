@@ -9,6 +9,7 @@ class Item
     private string $city;
     private string $time;
     private int $price;
+    private string $photoUrl;
 
     /**
      * Item constructor.
@@ -17,14 +18,16 @@ class Item
      * @param string $city
      * @param string $time
      * @param int $price
+     * @param string $photoUrl
      */
-    public function __construct(string $name, string $url, string $city, string $time, int $price)
+    public function __construct(string $name, string $url, string $city, string $time, int $price, string $photoUrl)
     {
         $this->name = $name;
         $this->url = $url;
         $this->city = $city;
         $this->time = $time;
         $this->price = $price;
+        $this->photoUrl = $photoUrl;
     }
 
     /**
@@ -105,5 +108,21 @@ class Item
     public function setPrice(int $price): void
     {
         $this->price = $price;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhotoUrl(): string
+    {
+        return $this->photoUrl;
+    }
+
+    /**
+     * @param string $photoUrl
+     */
+    public function setPhotoUrl(string $photoUrl): void
+    {
+        $this->photoUrl = $photoUrl;
     }
 }
