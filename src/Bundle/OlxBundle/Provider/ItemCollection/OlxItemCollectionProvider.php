@@ -34,7 +34,7 @@ class OlxItemCollectionProvider implements OlxItemCollectionProviderInterface
 
         $name = $node->filter('.title-cell')->filter('.space')->filter('h3')->first()->text();
         $url = $node->filter('.title-cell')->filter('.space')->filter('a')->first()->link()->getUri();
-        $price = intval(str_replace(' ', '', $node->filter('.price')->first()->text()));
+        $price = (int) str_replace(' ', '', $node->filter('.price')->first()->text());
 
         return new Item($name, $url, $city, $date, $price, $photo);
     }

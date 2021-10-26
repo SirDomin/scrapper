@@ -27,7 +27,7 @@ class IndexController extends AbstractController
         $this->olx->setCity('lodz');
 
 
-        $this->olxItemScrapper->getNewestItems($this->olx->getUrl());
-        return new JsonResponse(['url' => $this->olx->getUrl()]);
+        $items = $this->olxItemScrapper->getNewestItems($this->olx->getUrl());
+        return new JsonResponse(['items' => $items]);
     }
 }
