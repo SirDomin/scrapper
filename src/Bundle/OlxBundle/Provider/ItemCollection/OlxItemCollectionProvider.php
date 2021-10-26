@@ -6,9 +6,22 @@ namespace App\Bundle\OlxBundle\Provider\ItemCollection;
 
 use App\Bundle\OlxBundle\Item\Item;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class OlxItemCollectionProvider implements OlxItemCollectionProviderInterface
 {
+    private Serializer $serializer;
+
+    public function __construct() {
+        $encoder = [new JsonEncoder()];
+        $normalizer = [new ObjectNormalizer()];
+
+        $this->serializer = new Serializer($normalizer, $encoder);
+    }
+
+
     public function provide(string $content): array
     {
         $crawler = new Crawler($content);
@@ -22,7 +35,7 @@ class OlxItemCollectionProvider implements OlxItemCollectionProviderInterface
         return $crawler;
     }
 
-    private function getElements(Crawler $node): Item
+    private function getElements(Crawler $node): array
     {
         $photo = '';
         $city = $node->filter('.bottom-cell')->filter('.lheight16')->filter('small')->first()->text();
@@ -36,6 +49,9 @@ class OlxItemCollectionProvider implements OlxItemCollectionProviderInterface
         $url = $node->filter('.title-cell')->filter('.space')->filter('a')->first()->link()->getUri();
         $price = (int) str_replace(' ', '', $node->filter('.price')->first()->text());
 
-        return new Item($name, $url, $city, $date, $price, $photo);
+
+        $item = new Item($name, $url, $city, $date, $price, $photo);
+
+        return json_decode($this->serializer->serialize($item, 'json'), true);
     }
 }
