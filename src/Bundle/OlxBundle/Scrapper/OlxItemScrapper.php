@@ -22,8 +22,7 @@ class OlxItemScrapper
 
         $collection = $this->olxItemCollectionProvider->provide($response->getContent());
 
-        echo $response->getContent();
-
+        dd($collection);
 
 
         return [];
